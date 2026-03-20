@@ -4,16 +4,23 @@ const ageInput = document.getElementById("age");
 const cityInput = document.getElementById("city");
 const hobbyInput = document.getElementById("hobby");
 const result = document.getElementById("formResult");
+const clearBtn = document.getElementById("clear");
+
 form.addEventListener("submit", (event) => {
     event.preventDefault();
     validateInput();
 });
 
+clearBtn.addEventListener("click", (event) => {
+    event.preventDefault();
+    clearCard();
+    clearForm();
+});
+
 function validateInput() {
     const name = usernameInput.value.trim();
     if (name == "") {
-        const oldCard = document.getElementById("profileCard");
-        if (oldCard) oldCard.remove();
+        clearCard();
         result.textContent = "Ошибка: Имя не может быть пустым!";
         result.style.color = "red";
         usernameInput.focus();
@@ -21,8 +28,7 @@ function validateInput() {
     }
     const age = Number(ageInput.value);
     if (isNaN(age) || age <= 0 || age > 120) {
-        const oldCard = document.getElementById("profileCard");
-        if (oldCard) oldCard.remove();
+        clearCard();
         result.textContent = "Ошибка: Введите корректный возраст (от 1 до 120)!";
         result.style.color = "red";
         ageInput.focus();
@@ -31,8 +37,7 @@ function validateInput() {
     }
     const city = cityInput.value.trim();
     if (city == "") {
-        const oldCard = document.getElementById("profileCard");
-        if (oldCard) oldCard.remove();
+        clearCard();
         result.textContent = "Ошибка: Город не может быть пустым!";
         result.style.color = "red";
         cityInput.focus();
@@ -40,8 +45,7 @@ function validateInput() {
     }
     const hobby = hobbyInput.value.trim();
     if (hobby == "") {
-        const oldCard = document.getElementById("profileCard");
-        if (oldCard) oldCard.remove();
+        clearCard();
         result.textContent = "Ошибка: Хобби не может быть пустым!";
         result.style.color = "red";
         hobbyInput.focus();
@@ -51,17 +55,10 @@ function validateInput() {
 }
 
 function createProfile(name, age, city, hobby) {
-    const oldCard = document.getElementById("profileCard");
-    if (oldCard) oldCard.remove();
-    result.textContent = "";
-    
-    const container = document.createElement("div");
-    container.id = "profileCard";
-    container.style.display = "flex";
-    container.style.justifyContent = "center";
-    container.style.width = "100%";
+    clearCard();
     
     const card = document.createElement("div");
+    card.id = "profileCard";
     card.style.background = "white";
     card.style.borderRadius = "10px";
     card.style.padding = "20px";
@@ -102,8 +99,19 @@ function createProfile(name, age, city, hobby) {
     card.appendChild(ageDiv);
     card.appendChild(cityDiv);
     card.appendChild(hobbyDiv);
-
-    container.appendChild(card);
     
-    form.insertAdjacentElement("afterend", container);
+    form.insertAdjacentElement("afterend", card);
+}
+
+function clearCard() {
+    const oldCard = document.getElementById("profileCard");
+    if (oldCard) oldCard.remove();
+}
+
+function clearForm() {
+    usernameInput.value = "";
+    ageInput.value = "";
+    cityInput.value = "";
+    hobbyInput.value = "";
+    result.textContent = "";
 }
